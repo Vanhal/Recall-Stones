@@ -2,7 +2,7 @@ Recall Stones
 ======
 
 Build Status: 
-[![Build Status](https://drone.io/github.com/Vanhal/ModJam/status.png)](https://drone.io/github.com/Vanhal/ModJam/latest)
+[![Build Status](https://drone.io/github.com/Vanhal/Recall-Stones/status.png)](https://drone.io/github.com/Vanhal/Recall-Stones/latest)
 
 Latest Builds can be found on <a href="https://drone.io/github.com/Vanhal/ModJam/files">drone.io</a>
 
