@@ -35,7 +35,7 @@ apply plugin: 'forge'
 
 version = config.mod_version + "." + buildNum
 group= "com.vanhal.recallstones" 
-archivesBaseName = "RecallStones-" + config.minecraft_version + "-"
+archivesBaseName = "RecallStones-" + config.minecraft_version
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
