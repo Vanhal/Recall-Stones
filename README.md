@@ -4,7 +4,7 @@ Recall Stones
 Build Status: 
 [![Build Status](https://drone.io/github.com/Vanhal/Recall-Stones/status.png)](https://drone.io/github.com/Vanhal/Recall-Stones/latest)
 
-Latest Builds can be found on <a href="https://drone.io/github.com/Vanhal/ModJam/files">drone.io</a>
+Latest Builds can be found on <a href="https://drone.io/github.com/Vanhal/Recall-Stones/files">drone.io</a>
 
 
 Based on a system I remember using in ultma online comes a minecraft mod called Recall Stones.<br />
