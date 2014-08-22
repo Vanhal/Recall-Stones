@@ -38,7 +38,7 @@ public class ItemPlayerEssence extends Item {
 	public EntityPlayer getPlayer(ItemStack itemStack, World world) {
 		if (!world.isRemote) {
 			String username = this.getUsername(itemStack);
-			return MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(username);
+			return MinecraftServer.getServer().getConfigurationManager().func_152612_a(username);
 		}
 		return null;
 	}
