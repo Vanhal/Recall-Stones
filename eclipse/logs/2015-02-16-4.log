@@ -1,0 +1,85 @@
+[12:43:26] [Server thread/INFO]: Starting minecraft server version 1.7.10
+[12:43:31] [Server thread/INFO]: Loading properties
+[12:43:31] [Server thread/INFO]: Default game type: SURVIVAL
+[12:43:31] [Server thread/INFO]: Generating keypair
+[12:43:31] [Server thread/INFO]: Starting Minecraft server on *:25565
+[12:43:31] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[12:43:31] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[12:43:31] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[12:43:31] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[12:43:32] [Server thread/WARN]: Failed to load user banlist: 
+java.io.FileNotFoundException: banned-players.json (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method) ~[?:1.7.0_72]
+	at java.io.FileInputStream.<init>(Unknown Source) ~[?:1.7.0_72]
+	at com.google.common.io.Files.newReader(Files.java:86) ~[guava-17.0.jar:?]
+	at net.minecraft.server.management.UserList.func_152679_g(UserList.java:195) ~[UserList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.func_152620_y(DedicatedPlayerList.java:124) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.<init>(DedicatedPlayerList.java:31) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.startServer(DedicatedServer.java:214) [DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:445) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:752) [MinecraftServer$2.class:?]
+[12:43:32] [Server thread/WARN]: Failed to load ip banlist: 
+java.io.FileNotFoundException: banned-ips.json (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method) ~[?:1.7.0_72]
+	at java.io.FileInputStream.<init>(Unknown Source) ~[?:1.7.0_72]
+	at com.google.common.io.Files.newReader(Files.java:86) ~[guava-17.0.jar:?]
+	at net.minecraft.server.management.UserList.func_152679_g(UserList.java:195) ~[UserList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.func_152619_x(DedicatedPlayerList.java:112) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.<init>(DedicatedPlayerList.java:33) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.startServer(DedicatedServer.java:214) [DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:445) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:752) [MinecraftServer$2.class:?]
+[12:43:32] [Server thread/WARN]: Failed to load operators list: 
+java.io.FileNotFoundException: ops.json (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method) ~[?:1.7.0_72]
+	at java.io.FileInputStream.<init>(Unknown Source) ~[?:1.7.0_72]
+	at com.google.common.io.Files.newReader(Files.java:86) ~[guava-17.0.jar:?]
+	at net.minecraft.server.management.UserList.func_152679_g(UserList.java:195) ~[UserList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.loadOpsList(DedicatedPlayerList.java:136) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.<init>(DedicatedPlayerList.java:35) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.startServer(DedicatedServer.java:214) [DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:445) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:752) [MinecraftServer$2.class:?]
+[12:43:32] [Server thread/WARN]: Failed to load white-list: 
+java.io.FileNotFoundException: whitelist.json (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method) ~[?:1.7.0_72]
+	at java.io.FileInputStream.<init>(Unknown Source) ~[?:1.7.0_72]
+	at com.google.common.io.Files.newReader(Files.java:86) ~[guava-17.0.jar:?]
+	at net.minecraft.server.management.UserList.func_152679_g(UserList.java:195) ~[UserList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.readWhiteList(DedicatedPlayerList.java:160) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedPlayerList.<init>(DedicatedPlayerList.java:36) [DedicatedPlayerList.class:?]
+	at net.minecraft.server.dedicated.DedicatedServer.startServer(DedicatedServer.java:214) [DedicatedServer.class:?]
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:445) [MinecraftServer.class:?]
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:752) [MinecraftServer$2.class:?]
+[12:43:32] [Server thread/INFO]: Preparing level "world"
+[12:43:32] [Server thread/INFO]: Preparing start region for level 0
+[12:43:33] [Server thread/INFO]: Preparing spawn area: 6%
+[12:43:34] [Server thread/INFO]: Preparing spawn area: 12%
+[12:43:36] [Server thread/INFO]: Preparing spawn area: 19%
+[12:43:37] [Server thread/INFO]: Preparing spawn area: 25%
+[12:43:38] [Server thread/INFO]: Preparing spawn area: 31%
+[12:43:39] [Server thread/INFO]: Preparing spawn area: 37%
+[12:43:40] [Server thread/INFO]: Preparing spawn area: 42%
+[12:43:41] [Server thread/INFO]: Preparing spawn area: 47%
+[12:43:42] [Server thread/INFO]: Preparing spawn area: 53%
+[12:43:43] [Server thread/INFO]: Preparing spawn area: 57%
+[12:43:44] [Server thread/INFO]: Preparing spawn area: 63%
+[12:43:45] [Server thread/INFO]: Preparing spawn area: 68%
+[12:43:46] [Server thread/INFO]: Preparing spawn area: 73%
+[12:43:47] [Server thread/INFO]: Preparing spawn area: 79%
+[12:43:48] [Server thread/INFO]: Preparing spawn area: 84%
+[12:43:49] [Server thread/INFO]: Preparing spawn area: 89%
+[12:43:50] [Server thread/INFO]: Preparing spawn area: 94%
+[12:43:51] [Server thread/INFO]: Preparing spawn area: 99%
+[12:43:51] [Server thread/INFO]: Done (19.298s)! For help, type "help" or "?"
+[12:44:59] [Server thread/INFO]: Player971[/127.0.0.1:30897] logged in with entity id 1483 at (-235.5, 69.0, 108.5)
+[12:44:59] [Server thread/INFO]: Player971 joined the game
+[12:45:02] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2405ms behind, skipping 48 tick(s)
+nd engine started
+[12:44:21] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[12:44:22] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[12:44:22] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Recall Stones
+[12:44:23] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[12:44:23] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[12:44:24] [Sound Library Loader/INFO]: Sound engine started
+[12:44:57] [Client thread/INFO]: Connecting to localhost, 25565

@@ -25,15 +25,17 @@ configFile.withReader {
     ext.config = new ConfigSlurper().parse prop
 }
 
-if(ENV.DRONE_BUILD_NUMBER)
-buildNum = ENV.DRONE_BUILD_NUMBER
+y = config.droneAlter as Integer
+x = y
 
+if(ENV.DRONE_BUILD_NUMBER)
+x = ENV.DRONE_BUILD_NUMBER as Integer
+
+config.buildNum = x - y
 
 apply plugin: 'forge'
 
-
-
-version = config.mod_version + "." + buildNum
+version = config.mod_version + "." + config.buildNum
 group= "com.vanhal.recallstones" 
 archivesBaseName = "RecallStones-" + config.minecraft_version
 
