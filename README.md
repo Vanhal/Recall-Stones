@@ -37,7 +37,7 @@ Can store 25 charges and cost 5 per recall (Configurable in the config file).<br
 <img src="https://dl.dropboxusercontent.com/u/3886989/World%20Snapshots/DimensionRecallStone.png" alt="DimensionRecallStone.png" /><br />
 Works in the same way as the recall stone, but can also work across dimensions.</p>
 
-<p><strong><em>Dimension Recall Stone</em></strong><br />
+<p><strong><em>Following Recall Stone</em></strong><br />
 Can store 100 charges and cost 25 per recall (Configurable in the config file).<br />
 <img src="https://dl.dropboxusercontent.com/u/3886989/World%20Snapshots/FollowingStone.png" alt="FollowingStone.png" /><br />
 Crafted with a player essence. Will transport you to the player whose essence you made the stone with.<br />
