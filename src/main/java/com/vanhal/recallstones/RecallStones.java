@@ -105,6 +105,9 @@ public class RecallStones {
 		GameRegistry.addRecipe(new RecipeRechargeStone(new ItemStack(itemRecallStone)));
 		GameRegistry.addRecipe(new RecipeRechargeStone(new ItemStack(itemDimensionStone)));
 
+		//add copy recipies
+		GameRegistry.addRecipe(new RecipeCopyStone(new ItemStack(itemRecallStone)));
+		GameRegistry.addRecipe(new RecipeCopyStone(new ItemStack(itemDimensionStone)));
 
 		//add items to dungeon loot
 		if (config.get(Configuration.CATEGORY_GENERAL, "dungeonLoot", true).getBoolean(true)) {
