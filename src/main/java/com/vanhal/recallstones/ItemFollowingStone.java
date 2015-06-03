@@ -18,7 +18,7 @@ public class ItemFollowingStone extends ItemBase {
 	public ItemFollowingStone() {
 		super();
 		this.setName("followingStone");
-		this.setTexture("followingStone");
+		this.setTextureName(RecallStones.MODID + ":" + "followingStone");
 		this.allowCrossDimension = true;
 		this.maxCharge = 100;
 		this.chargesPerUse = 25;
@@ -87,15 +87,15 @@ public class ItemFollowingStone extends ItemBase {
 	
 	
 	@SideOnly(Side.CLIENT)
+	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
-		int isActive = itemStack.getItemDamage();
 		String username = this.getUsername(itemStack);
-		
-		if (isActive==0) {
+
+		if (username == null)
 			list.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Unlinked");
-		} else if (username != null) {
-			list.add(EnumChatFormatting.GRAY + "Linked to "+username);
-		}
+		else
+			list.add(EnumChatFormatting.GRAY + "Linked to " + username);
+
 		this.addCharge(itemStack, list);
 	}
 }

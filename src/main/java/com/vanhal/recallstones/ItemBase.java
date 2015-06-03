@@ -22,7 +22,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
-public class ItemBase extends Item {
+public abstract class ItemBase extends Item {
 	public String itemName;
 	
 	//settings
@@ -34,14 +34,7 @@ public class ItemBase extends Item {
 	public int maxCharge = 10;
 	public int chargesPerUse = 2;
 	
-	protected IIcon inactiveStone;
-	protected IIcon activeStone;
-	
-	protected String textureName = "";
-	
 	public ItemBase() {
-		this.setCreativeTab(RecallStones.recallTab);
-		this.setMaxStackSize(1);
 	}
 	
 	public void setConfig(Configuration config) {
@@ -57,25 +50,9 @@ public class ItemBase extends Item {
 	protected void setName(String name) {
 		this.itemName = name;
 		this.setUnlocalizedName(this.itemName);
+		this.setTextureName(RecallStones.MODID + ":" + name);
 	}
-	
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int dmg) {
-		return (dmg == 0)? inactiveStone : activeStone;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
-		this.inactiveStone = register.registerIcon(RecallStones.MODID+":"+textureName);
-		this.activeStone = register.registerIcon(RecallStones.MODID+":"+textureName+"Active");
-	}
-	
-	//set the texture name for the stone
-	protected void setTexture(String tex) {
-		this.textureName = tex;
-	}
-	
-	
+
 	//deal with the cool down time
 	public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
 		if (!world.isRemote) {
@@ -256,8 +233,8 @@ public class ItemBase extends Item {
 		if (this.requireCharge) {
 			if (itemStack.stackTagCompound == null) return false;
 			int currentCharge = ( this.getCharge(itemStack) + (this.chargesPerPearl * (number-1)));
-			if (currentCharge >= this.maxCharge) return false;
-			return true;
+
+			return currentCharge < this.maxCharge;
 		} else {
 			return false;
 		}
@@ -285,16 +262,12 @@ public class ItemBase extends Item {
 	
 	//check the target location and see if it's clear to tp to
 	public boolean checkTarget(int targetDimension, int targetX, int targetY, int targetZ) {
-		
 		World world = DimensionManager.getWorld(targetDimension);
 		Block target1 = world.getBlock(targetX, targetY, targetZ);
 		Block target2 = world.getBlock(targetX, targetY + 1, targetZ);
 
-		if ( (target1.isReplaceable(world, targetX, targetY, targetZ)) && (target2.isReplaceable(world, targetX, targetY + 1, targetZ)) ) {
-			return true;
-		}
-		
-		return false;
+		return (target1.isReplaceable(world, targetX, targetY, targetZ))
+				&& (target2.isReplaceable(world, targetX, targetY + 1, targetZ));
 	}
 	
 	protected void animateTP(EntityPlayer player) {
@@ -305,23 +278,9 @@ public class ItemBase extends Item {
 	protected void tellPlayer(EntityPlayer player, String message) {
 		player.addChatMessage(new ChatComponentText(message));
 	}
-	
-	
+
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
-		int isActive = itemStack.getItemDamage();
-		
-		if (isActive==0) {
-			list.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Unmarked");
-			list.add(EnumChatFormatting.GRAY + "Sneak right click with item");
-			list.add(EnumChatFormatting.GRAY + "to mark current location");
-		} else {
-			list.add(EnumChatFormatting.GRAY + "Marked at location: "+getLocationString(itemStack));
-			list.add(EnumChatFormatting.GRAY + "Marked Dimension: "+itemStack.stackTagCompound.getInteger("world"));
-			addCharge(itemStack, list);
-		}
-		
-	}
+	public abstract void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4);
 	
 	public void addCharge(ItemStack itemStack, List list) {
 		if (itemStack.stackTagCompound != null) {

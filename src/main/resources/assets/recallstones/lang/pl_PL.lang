@@ -1,5 +1,7 @@
 itemGroup.recallTab=Recall Stones
 item.recallStone.name=Kamień odwołania
+item.recallStoneBlank.name=Kamień odwołania puste
 item.playerEssence.name=Esencja gracza
 item.dimensionStone.name=Wymiarowy kamień
+item.dimensionStoneBlank.name=Wymiarowy puste kamień
 item.followingStone.name=Podążający kamień

@@ -1,6 +1,6 @@
 package com.vanhal.recallstones.client;
 
-import com.vanhal.recallstones.ItemRecallStone;
+import com.vanhal.recallstones.ItemRecallStoneBlank;
 import com.vanhal.recallstones.RecallStones;
 import com.vanhal.recallstones.Messages.MessageMarkStone;
 
@@ -77,13 +77,10 @@ public class GUINameStone extends GuiScreen  {
 	
 	public void submitButton() {
 		this.mc.thePlayer.closeScreen();
-		//locationField.getText()
-		if (this.mc.thePlayer.getHeldItem().getItem() instanceof ItemRecallStone) {
+		if (this.mc.thePlayer.getHeldItem().getItem() instanceof ItemRecallStoneBlank) {
 			//send pack to server with name.
 			MessageMarkStone msg = new MessageMarkStone(locationField.getText());
 			RecallStones.network.sendToServer(msg);
-			//ItemRecallStone stone = (ItemRecallStone)this.mc.thePlayer.getHeldItem().getItem();
-			//stone.nameStone(locationField.getText(), this.mc.thePlayer, this.mc.thePlayer.getHeldItem());
 		}
 	}
 	

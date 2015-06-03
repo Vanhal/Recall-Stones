@@ -23,29 +23,19 @@ public class ItemRecallStone extends ItemBase {
 	public ItemRecallStone() {
 		super();
 		this.setName("recallStone");
-		this.setTexture("recallStone");
 		this.maxCharge = 10;
 		this.chargesPerUse = 2;
 		this.allowCrossDimension = false;
 	}
 	
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		int isActive = itemStack.getItemDamage();
-		if (world.isRemote) {
-			if (isActive==0) {
-				if (player.isSneaking()) {
-					player.openGui(RecallStones.instance, GUIHandler.RENAME_STONE, world, 0, 0, 0);
-				}
-			}
-		}
-		
-		if (!world.isRemote) {
-			if (isActive==1) {
-				//already marked, so recall
-				this.moveLocation(itemStack, player, world);
-				
-			}
-		}
+		//if (itemStack.stackSize == 1)	// Only allow movement if there is a single stone equipped
+			this.moveLocation(itemStack, player, world);
+
+		// HACK: Allowing teleportation with multiple stones selected makes for all stones being drained at once,
+		//		but this code is double-printing error messages!
+		//else
+		//	tellPlayer(player, "Cannot use multiple stones at once!");
 		return itemStack;
 	}
 	
@@ -61,8 +51,11 @@ public class ItemRecallStone extends ItemBase {
 			}
 		}
 	}
-	
-	
-	
 
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
+		list.add(EnumChatFormatting.GRAY + "Marked at location: " + getLocationString(itemStack));
+		list.add(EnumChatFormatting.GRAY + "Marked Dimension: " + itemStack.stackTagCompound.getInteger("world"));
+		addCharge(itemStack, list);
+	}
 }

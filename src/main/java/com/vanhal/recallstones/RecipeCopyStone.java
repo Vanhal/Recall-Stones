@@ -11,34 +11,36 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
 public class RecipeCopyStone implements IRecipe {
-    private ItemStack inputItem;
 
-    public RecipeCopyStone(ItemStack itemStack) {
-        inputItem = itemStack;
+    private ItemBase activeStone;
+    private ItemBase blankStone;
+
+    public RecipeCopyStone(ItemBase activeStone, ItemBase blankStone) {
+        this.activeStone = activeStone;
+        this.blankStone = blankStone;
     }
 
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-        ItemStack linkedStone = null;
-        int numEmptyStones = 0;
+        ItemStack activeStoneStack = null;
+        int numBlankStones = 0;
 
         int invSize = inv.getSizeInventory();
         for (int i = 0; i < invSize; i++) {
             ItemStack itemstack = inv.getStackInSlot(i);
             if (itemstack != null) {
-                if (itemstack.getItem() instanceof ItemBase) {
-                    if (itemstack.getItemDamage() != 0) {
-                        linkedStone = itemstack;
-                    } else {
-                        numEmptyStones++;
-                    }
+                if (itemstack.getItem() == activeStone) {
+                    activeStoneStack = itemstack;
+                } else {
+                    numBlankStones++;
                 }
             }
         }
 
-        ItemStack output = linkedStone.copy();
+        // Trust that we found a stone stack, since this recipe must pass Match to get here
+        ItemStack output = activeStoneStack.copy();
 
-        // HACK: Set the stak size to that of the number of empty stones added
-        output.stackSize += numEmptyStones;
+        // Set the stack size to that of the number of empty stones added
+        output.stackSize += numBlankStones;
         ItemBase outputStone = (ItemBase)output.getItem();
         outputStone.setCharge(output, outputStone.maxCharge);
 
@@ -46,7 +48,7 @@ public class RecipeCopyStone implements IRecipe {
     }
 
     public ItemStack getRecipeOutput() {
-        ItemStack output = inputItem.copy();
+        ItemStack output = new ItemStack(activeStone);
         output.setItemDamage(1);
         return output;
     }
@@ -59,28 +61,25 @@ public class RecipeCopyStone implements IRecipe {
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
         int invSize = inv.getSizeInventory();
-        boolean haveEmptyStone = false;
-        boolean haveLinkedStone = false;
+        boolean haveBlankStone = false;
+        boolean haveActiveStone = false;
         int otherItems = 0;
-        for (int i = 0; i < invSize; i++)  {
-            ItemStack temp = inv.getStackInSlot(i);
-            if (temp!=null) {
-                if (temp.getItem() == inputItem.getItem()) {
-                    if(temp.getItemDamage() == 0) {
-                        haveEmptyStone = true;
-                    } else {
-                        if(haveLinkedStone) otherItems++;
-                        else haveLinkedStone = true;
-                    }
+        for (int i = 0; i < invSize; i++) {
+            ItemStack itemStack = inv.getStackInSlot(i);
+            if (itemStack != null) {
+                if (itemStack.getItem() == blankStone) {
+                    haveBlankStone = true;
+                } else if (itemStack.getItem() == activeStone) {
+                    if (haveActiveStone) // TODO: also make sure the active stone has full power
+                        otherItems++;
+                    else haveActiveStone = true;
                 } else {
                     otherItems++;
                 }
             }
         }
-        if ( haveEmptyStone && haveLinkedStone && (otherItems == 0) ) {
-            return true;
-        }
-        return false;
+
+        return haveBlankStone && haveActiveStone && (otherItems == 0);
     }
 
 }
