@@ -2,10 +2,9 @@ package com.vanhal.recallstones.client;
 
 import com.vanhal.recallstones.ItemRecallStone;
 import com.vanhal.recallstones.RecallStones;
-import com.vanhal.recallstones.Messages.SendName;
+import com.vanhal.recallstones.Messages.MessageMarkStone;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,7 +80,7 @@ public class GUINameStone extends GuiScreen  {
 		//locationField.getText()
 		if (this.mc.thePlayer.getHeldItem().getItem() instanceof ItemRecallStone) {
 			//send pack to server with name.
-			SendName msg = new SendName(locationField.getText());
+			MessageMarkStone msg = new MessageMarkStone(locationField.getText());
 			RecallStones.network.sendToServer(msg);
 			//ItemRecallStone stone = (ItemRecallStone)this.mc.thePlayer.getHeldItem().getItem();
 			//stone.nameStone(locationField.getText(), this.mc.thePlayer, this.mc.thePlayer.getHeldItem());

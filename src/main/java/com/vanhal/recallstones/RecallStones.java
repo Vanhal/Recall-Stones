@@ -1,6 +1,6 @@
 package com.vanhal.recallstones;
 
-import com.vanhal.recallstones.Messages.SendName;
+import com.vanhal.recallstones.Messages.MessageMarkStone;
 import com.vanhal.recallstones.Messages.SendParticles;
 import com.vanhal.recallstones.client.GUIHandler;
 import com.vanhal.utls.PacketPipeline;
@@ -11,9 +11,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -23,7 +21,6 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 
 @Mod(modid = RecallStones.MODID, version = RecallStones.VERSION)
 public class RecallStones {
@@ -129,7 +126,7 @@ public class RecallStones {
 	public void init(FMLInitializationEvent event) {
 		//init the network packets
 		network.initialise();
-		network.registerPacket(SendName.class);
+		network.registerPacket(MessageMarkStone.class);
 		network.registerPacket(SendParticles.class);
 		//init the GUIHandler
 		new GUIHandler();

@@ -10,13 +10,13 @@ import io.netty.channel.ChannelHandlerContext;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
-public class SendName extends AbstractMessage {
+public class MessageMarkStone extends AbstractMessage {
 	
 	String stoneName;
 	
-	public SendName() {}
+	public MessageMarkStone() {}
 	
-	public SendName(String name) {
+	public MessageMarkStone(String name) {
 		this.stoneName = name;
 	}
 
