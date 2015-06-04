@@ -40,7 +40,7 @@ public class RecipeCopyStone implements IRecipe {
         ItemStack output = activeStoneStack.copy();
 
         // Set the stack size to that of the number of empty stones added
-        output.stackSize += numBlankStones;
+        output.stackSize = numBlankStones + 1;
         ItemBase outputStone = (ItemBase)output.getItem();
         outputStone.setCharge(output, outputStone.maxCharge);
 
@@ -49,7 +49,6 @@ public class RecipeCopyStone implements IRecipe {
 
     public ItemStack getRecipeOutput() {
         ItemStack output = new ItemStack(activeStone);
-        output.setItemDamage(1);
         return output;
     }
 
@@ -70,7 +69,9 @@ public class RecipeCopyStone implements IRecipe {
                 if (itemStack.getItem() == blankStone) {
                     haveBlankStone = true;
                 } else if (itemStack.getItem() == activeStone) {
-                    if (haveActiveStone) // TODO: also make sure the active stone has full power
+                    if (haveActiveStone
+                            // Only accept fully-charged stones
+                            || activeStone.getCharge(itemStack) != activeStone.maxCharge)
                         otherItems++;
                     else haveActiveStone = true;
                 } else {

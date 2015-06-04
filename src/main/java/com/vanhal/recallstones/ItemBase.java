@@ -30,7 +30,7 @@ public abstract class ItemBase extends Item {
 	public boolean allowCrossDimension = true;
 	public boolean requireCharge = true;
 	public int chargesPerPearl = 10;
-	
+
 	public int maxCharge = 10;
 	public int chargesPerUse = 2;
 	
@@ -41,7 +41,7 @@ public abstract class ItemBase extends Item {
 		//values
 		this.requireCharge = config.get(Configuration.CATEGORY_GENERAL, "requireCharge", true).getBoolean(true);
 		this.chargesPerPearl = config.get(Configuration.CATEGORY_GENERAL, "chargesPerPearl", 5).getInt();
-		
+
 		this.chargesPerUse = config.get(this.itemName, "chargesPerUse", this.chargesPerUse).getInt();
 		this.maxCharge = config.get(this.itemName, "maxCharge", this.maxCharge).getInt();
 		this.coolDownTime = config.get(this.itemName, "coolDownTime", 10).getInt() * 20;
@@ -285,7 +285,7 @@ public abstract class ItemBase extends Item {
 	public void addCharge(ItemStack itemStack, List list) {
 		if (itemStack.stackTagCompound != null) {
 			if (this.requireCharge) {
-				int currentCharge = itemStack.stackTagCompound.getInteger("currentCharge");
+				int currentCharge = getCharge(itemStack);
 				list.add(EnumChatFormatting.DARK_GREEN  + "Current Charges: "+currentCharge+"/"+this.maxCharge+" ("+this.chargesPerUse+" per use)");
 				if (currentCharge == 0) {
 					list.add(EnumChatFormatting.RED  + "Craft with an Ender Pearl to recharge");

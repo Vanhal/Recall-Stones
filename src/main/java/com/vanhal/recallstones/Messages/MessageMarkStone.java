@@ -8,7 +8,6 @@ import com.vanhal.utls.AbstractMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import net.minecraft.item.ItemStack;
 
 public class MessageMarkStone extends AbstractMessage {
@@ -58,7 +57,7 @@ public class MessageMarkStone extends AbstractMessage {
 		ItemRecallStoneBlank stone = (ItemRecallStoneBlank) heldStack.getItem();
 		ItemRecallStone activeStone = stone.getActiveStone();
 		ItemStack newStoneStack = new ItemStack(activeStone);
-		activeStone.nameStone(this.stoneName, player, newStoneStack);
+		activeStone.markStone(this.stoneName, player, newStoneStack);
 
 		// Consume Blank Stone and add the new Recall Stone
 		if(heldStack.stackSize == 1)

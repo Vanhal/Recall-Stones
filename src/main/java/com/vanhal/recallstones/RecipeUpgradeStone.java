@@ -35,25 +35,28 @@ public class RecipeUpgradeStone implements IRecipe {
 				}
 			}
 		}
-		if ( (stone!=null) && (stone.getItemDamage()==1) ) {
-			ItemRecallStone oldStone = (ItemRecallStone)stone.getItem();
-			ItemStack output = dimenionalStone.copy();
-			ItemDimensionStone newStone = (ItemDimensionStone)output.getItem();
-			newStone.setLocation(output, oldStone.getDimension(stone), oldStone.getLocX(stone), oldStone.getLocY(stone), oldStone.getLocZ(stone));
-			newStone.setCharge(output, oldStone.getCharge(stone));
-			if (stone.getDisplayName()!="") {
-				output.setStackDisplayName(stone.getDisplayName());
-			}
-			output.setItemDamage(1);
-			return output;
+		if (stone == null) return null;
+
+		ItemRecallStone oldStone = (ItemRecallStone) stone.getItem();
+		ItemStack output = dimenionalStone.copy();
+		ItemDimensionStone newStone = (ItemDimensionStone) output.getItem();
+		newStone.setLocation(output,
+				oldStone.getDimension(stone),
+				oldStone.getLocX(stone),
+				oldStone.getLocY(stone),
+				oldStone.getLocZ(stone));
+
+		// Caary over depleted energy, but increase if max increased
+		int less = oldStone.maxCharge - oldStone.getCharge(stone);
+		newStone.setCharge(output, newStone.maxCharge - less);
+		if (stone.getDisplayName() != "") {
+			output.setStackDisplayName(stone.getDisplayName());
 		}
-		return null;
+		return output;
 	}
 
 	public ItemStack getRecipeOutput() {
-		ItemStack output = dimenionalStone.copy();
-		output.setItemDamage(1);
-		return output;
+		return dimenionalStone.copy();
 	}
 
 	public int getRecipeSize() {
@@ -70,7 +73,7 @@ public class RecipeUpgradeStone implements IRecipe {
 					return false;
 				}
 			}
-			if (inv.getStackInRowAndColumn(1, 1).getItemDamage()==1) {
+			if (inv.getStackInRowAndColumn(1, 1).getItem() instanceof ItemRecallStone) {
 				return true;
 			}
 			return false;

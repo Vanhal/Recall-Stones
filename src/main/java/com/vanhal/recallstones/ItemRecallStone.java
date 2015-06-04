@@ -29,21 +29,23 @@ public class ItemRecallStone extends ItemBase {
 	}
 	
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		//if (itemStack.stackSize == 1)	// Only allow movement if there is a single stone equipped
+		if (itemStack.stackSize == 1) {
 			this.moveLocation(itemStack, player, world);
-
-		// HACK: Allowing teleportation with multiple stones selected makes for all stones being drained at once,
-		//		but this code is double-printing error messages!
-		//else
-		//	tellPlayer(player, "Cannot use multiple stones at once!");
-		return itemStack;
+			return itemStack;
+		} else if(player.inventory.getFirstEmptyStack() > -1){
+			ItemStack used = itemStack.splitStack(1);
+			this.moveLocation(used, player, world);
+			player.inventory.addItemStackToInventory(itemStack);
+			return used;
+		} else {
+			tellPlayer(player, "No room for leftover Recall Stones!");
+			return itemStack;
+		}
 	}
 	
-	public void nameStone(String name, EntityPlayer player, ItemStack itemStack) {
-		if (itemStack.getItemDamage()==0) {
-			//Not yet active, record the location and store it
+	public void markStone(String name, EntityPlayer player, ItemStack itemStack) {
+		if (itemStack.getItem() instanceof ItemRecallStone) {
 			if (this.setLocation(itemStack, player.dimension, player.posX, player.posY, player.posZ)) {
-				itemStack.setItemDamage(1);
 				if (name!="") {
 					itemStack.setStackDisplayName(name);
 				}
