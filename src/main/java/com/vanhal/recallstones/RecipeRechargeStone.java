@@ -41,7 +41,6 @@ public class RecipeRechargeStone implements IRecipe {
 	
 	public ItemStack getRecipeOutput() {
 		ItemStack output = inputItem.copy();
-		output.setItemDamage(1);
 		return output;
 	}
 

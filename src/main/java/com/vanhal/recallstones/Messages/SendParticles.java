@@ -54,7 +54,7 @@ public class SendParticles extends AbstractMessage {
 
 	@Override
 	public void handleServerSide(EntityPlayer player) {
-		// TODO Auto-generated method stub
+		// Nothing to do here
 	}
 
 }

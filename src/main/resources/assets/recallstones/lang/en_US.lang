@@ -1,5 +1,7 @@
 itemGroup.recallTab=Recall Stones
 item.recallStone.name=Recall Stone
+item.recallStoneBlank.name=Recall Stone
 item.playerEssence.name=Player Essence
 item.dimensionStone.name=Dimensional Stone
+item.dimensionStoneBlank.name=Dimension Stone
 item.followingStone.name=Following Stone

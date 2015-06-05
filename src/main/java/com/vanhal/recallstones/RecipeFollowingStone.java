@@ -54,7 +54,6 @@ public class RecipeFollowingStone extends ShapelessRecipes {
 	
 	public ItemStack getRecipeOutput() {
 		ItemStack output = new ItemStack(RecallStones.itemFollowingStone);
-		//output.setItemDamage(1);
 		return output;
 	}
 }
