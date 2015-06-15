@@ -19,7 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ItemRecallStone extends ItemBase {
-		
+
 	public ItemRecallStone() {
 		super();
 		this.setName("recallStone");
@@ -27,22 +27,25 @@ public class ItemRecallStone extends ItemBase {
 		this.chargesPerUse = 2;
 		this.allowCrossDimension = false;
 	}
-	
+
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		if (itemStack.stackSize == 1) {
-			this.moveLocation(itemStack, player, world);
-			return itemStack;
-		} else if(player.inventory.getFirstEmptyStack() > -1){
-			ItemStack used = itemStack.splitStack(1);
-			this.moveLocation(used, player, world);
-			player.inventory.addItemStackToInventory(itemStack);
-			return used;
-		} else {
-			tellPlayer(player, "No room for leftover Recall Stones!");
-			return itemStack;
+		if (!world.isRemote) {
+			if (itemStack.stackSize == 1) {
+				this.moveLocation(itemStack, player, world);
+				return itemStack;
+			} else if(player.inventory.getFirstEmptyStack() > -1){
+				ItemStack used = itemStack.splitStack(1);
+				this.moveLocation(used, player, world);
+				player.inventory.addItemStackToInventory(itemStack);
+				return used;
+			} else {
+				tellPlayer(player, "No room for leftover Recall Stones!");
+				return itemStack;
+			}
 		}
+		return itemStack;
 	}
-	
+
 	public void markStone(String name, EntityPlayer player, ItemStack itemStack) {
 		if (itemStack.getItem() instanceof ItemRecallStone) {
 			if (this.setLocation(itemStack, player.dimension, player.posX, player.posY, player.posZ)) {

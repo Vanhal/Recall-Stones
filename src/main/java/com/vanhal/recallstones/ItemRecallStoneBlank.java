@@ -43,8 +43,10 @@ public class ItemRecallStoneBlank extends ItemBase {
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-        if (player.isSneaking() && player.inventory.getFirstEmptyStack() > -1)
-            player.openGui(RecallStones.instance, GUIHandler.RENAME_STONE, world, 0, 0, 0);
+		if (world.isRemote) {
+        	if (player.isSneaking() && player.inventory.getFirstEmptyStack() > -1)
+            	player.openGui(RecallStones.instance, GUIHandler.RENAME_STONE, world, 0, 0, 0);
+		}
 
         return itemStack;
     }
