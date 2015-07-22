@@ -8,6 +8,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeRechargeStone implements IRecipe {
 	private ItemStack inputItem;
@@ -22,10 +23,12 @@ public class RecipeRechargeStone implements IRecipe {
 		int invSize = inv.getSizeInventory();
 		for (int i = 0; i < invSize; i++)  {
 			ItemStack itemstack = inv.getStackInSlot(i);
-			if (itemstack != null) {
+			if ( (itemstack != null) && (itemstack.getItem()!=null) ) {
 				if (itemstack.getItem() instanceof ItemBase) {
 					stone = itemstack;
-				} else if (itemstack.getItem().getClass() == Items.ender_pearl.getClass()) {
+				} else if (itemstack.getItem().equals(Items.ender_pearl)) {
+					numberPearls++;
+				} else if (OreDictionary.getOreID(itemstack) == OreDictionary.getOreID("cropEnderweed")) {
 					numberPearls++;
 				}
 			}
@@ -57,11 +60,13 @@ public class RecipeRechargeStone implements IRecipe {
 		int otherItems = 0;
 		for (int i = 0; i < invSize; i++)  {
 			ItemStack temp = inv.getStackInSlot(i);
-			if (temp!=null) {
+			if ( (temp!=null) && (temp.getItem()!=null) ) {
 				if (temp.getItem() instanceof ItemBase) {
 					if (!haveStone) haveStone = true;
 					else otherItems++;
-				} else if (temp.getItem().getClass() == Items.ender_pearl.getClass()) {
+				} else if (temp.getItem().equals(Items.ender_pearl)) {
+					numberPearls++;
+				} else if (OreDictionary.getOreID(temp) == OreDictionary.getOreID("cropEnderweed")) {
 					numberPearls++;
 				} else {
 					otherItems++;

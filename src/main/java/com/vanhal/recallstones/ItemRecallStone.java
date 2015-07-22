@@ -59,8 +59,12 @@ public class ItemRecallStone extends ItemBase {
 
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
-		list.add(EnumChatFormatting.GRAY + "Marked at location: " + getLocationString(itemStack));
-		list.add(EnumChatFormatting.GRAY + "Marked Dimension: " + itemStack.stackTagCompound.getInteger("world"));
-		addCharge(itemStack, list);
+		if (itemStack != null) {
+			if (itemStack.hasTagCompound()) {
+				list.add(EnumChatFormatting.GRAY + "Marked at location: " + getLocationString(itemStack));
+				list.add(EnumChatFormatting.GRAY + "Marked Dimension: " + itemStack.stackTagCompound.getInteger("world"));
+				addCharge(itemStack, list);
+			}
+		}
 	}
 }
