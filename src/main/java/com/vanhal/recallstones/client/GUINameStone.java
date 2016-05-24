@@ -1,13 +1,17 @@
 package com.vanhal.recallstones.client;
 
-import com.vanhal.recallstones.ItemRecallStoneBlank;
+import java.io.IOException;
+
 import com.vanhal.recallstones.RecallStones;
-import com.vanhal.recallstones.Messages.MessageMarkStone;
+import com.vanhal.recallstones.items.ItemRecallStoneBlank;
+import com.vanhal.recallstones.networking.MessageMarkStone;
+import com.vanhal.recallstones.networking.NetworkHandler;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 
 public class GUINameStone extends GuiScreen  {
@@ -17,11 +21,16 @@ public class GUINameStone extends GuiScreen  {
 	
 	private GuiTextField locationField;
 	private String locationName = "";
+	
+	private EntityPlayer user;
+	private EnumHand stoneHand;
 
-	public GUINameStone(EntityPlayer player) {
-		
+	public GUINameStone(EntityPlayer player, EnumHand enumHand) {
+		user = player;
+		stoneHand = enumHand;
 	}
 	
+	@Override
 	public void drawScreen(int x, int y, float f) {
 		drawDefaultBackground();
 		
@@ -37,6 +46,7 @@ public class GUINameStone extends GuiScreen  {
 		super.drawScreen(x, y, f);
 	}
 	
+	@Override
 	public void initGui() {
 		int posX = (width - xSizeOfTexture) / 2;
         int posY = (height - ySizeOfTexture) / 2;
@@ -45,14 +55,15 @@ public class GUINameStone extends GuiScreen  {
         this.buttonList.add(new GuiButton(1, posX + 6, posY + 60, 78, 20, "Cancel"));
         this.buttonList.add(new GuiButton(2, posX + 90, posY + 60, 78, 20, "Mark Location"));
         
-        locationField = new GuiTextField(fontRendererObj, posX + 6, posY + 30, 162, 20);
+        locationField = new GuiTextField(1, fontRendererObj, posX + 6, posY + 30, 162, 20);
         locationField.setFocused(true);
         locationField.setMaxStringLength(80);
         
 		
 	}
 	
-	protected void keyTyped(char c, int i) {
+	@Override
+	protected void keyTyped(char c, int i) throws IOException {
 		super.keyTyped(c, i);
 		if (locationField.isFocused()) {
 			locationField.textboxKeyTyped(c, i);
@@ -62,28 +73,31 @@ public class GUINameStone extends GuiScreen  {
 		}
 	}
 	
-	public void mouseClicked(int i, int j, int k) {
+	@Override
+	public void mouseClicked(int i, int j, int k) throws IOException {
 		super.mouseClicked(i, j, k);
 		locationField.mouseClicked(i, j, k);
 	}
 	
+	@Override
 	public void actionPerformed(GuiButton button) {
 		if (button.id == 1) { //cancel
-			this.mc.thePlayer.closeScreen();
+			user.closeScreen();
 		} else if (button.id == 2) {
 			submitButton();
 		}
 	}
 	
 	public void submitButton() {
-		this.mc.thePlayer.closeScreen();
-		if (this.mc.thePlayer.getHeldItem().getItem() instanceof ItemRecallStoneBlank) {
+		user.closeScreen();
+		if (user.getHeldItem(stoneHand).getItem() instanceof ItemRecallStoneBlank) {
 			//send pack to server with name.
-			MessageMarkStone msg = new MessageMarkStone(locationField.getText());
-			RecallStones.network.sendToServer(msg);
+			MessageMarkStone msg = new MessageMarkStone(locationField.getText(), stoneHand);
+			NetworkHandler.sendToServer(msg);
 		}
 	}
 	
+	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
 	}

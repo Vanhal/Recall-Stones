@@ -1,7 +1,9 @@
-package com.vanhal.recallstones;
+package com.vanhal.recallstones.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.vanhal.recallstones.items.ItemBase;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -9,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class RecipeCopyStone implements IRecipe {
 
@@ -82,5 +85,10 @@ public class RecipeCopyStone implements IRecipe {
 
         return haveBlankStone && haveActiveStone && (otherItems == 0);
     }
+
+	@Override
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+	}
 
 }

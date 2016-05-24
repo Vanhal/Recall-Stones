@@ -1,6 +1,9 @@
 package com.vanhal.recallstones;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import com.vanhal.recallstones.items.ItemPlayerEssence;
+import com.vanhal.recallstones.items.RecallItems;
+
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,15 +21,15 @@ public class EventsRecall {
 
 	@SubscribeEvent
 	public void PlayerDropsEvent(PlayerDropsEvent event) {
-		if (event.source.getSourceOfDamage()!=null) {
-			if (event.source.getSourceOfDamage() instanceof EntityPlayer) {
+		if (event.getSource().getSourceOfDamage()!=null) {
+			if (event.getSource().getSourceOfDamage() instanceof EntityPlayer) {
 				//drop essence
-				if (RecallStones.dropEssence) {
-					EntityPlayer deadPlayer = event.entityPlayer;
-					ItemPlayerEssence essence = RecallStones.itemPlayerEssence;
+				if (RecallItems.dropEssence) {
+					EntityPlayer deadPlayer = event.getEntityPlayer();
+					ItemPlayerEssence essence = RecallItems.itemPlayerEssence;
 					ItemStack essenceStack = new ItemStack(essence);
 					essence.setPlayer(essenceStack, deadPlayer);
-					event.entity.entityDropItem(essenceStack, 0.5F);
+					event.getEntity().entityDropItem(essenceStack, 0.5F);
 				}
 			}
 		}

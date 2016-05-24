@@ -1,22 +1,29 @@
-package com.vanhal.recallstones;
+package com.vanhal.recallstones.items;
 
 import java.util.List;
 
-import com.vanhal.recallstones.Messages.SendParticles;
+import com.vanhal.recallstones.RecallStones;
+import com.vanhal.recallstones.networking.NetworkHandler;
+import com.vanhal.recallstones.networking.SendParticles;
+import com.vanhal.recallstones.utls.Ref;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -34,6 +41,8 @@ public abstract class ItemBase extends Item {
 	public int maxCharge = 10;
 	public int chargesPerUse = 2;
 	
+	public SoundEvent warpSound = new SoundEvent(new ResourceLocation(Ref.MODID+":warp"));
+	
 	public ItemBase() {
 	}
 	
@@ -50,44 +59,44 @@ public abstract class ItemBase extends Item {
 	protected void setName(String name) {
 		this.itemName = name;
 		this.setUnlocalizedName(this.itemName);
-		this.setTextureName(RecallStones.MODID + ":" + name);
 	}
 
 	//deal with the cool down time
+	@Override
 	public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
 		if (!world.isRemote) {
 			int coolDown = this.getCoolDown(itemStack);
 			if (coolDown>0) {
-				itemStack.stackTagCompound.setInteger("coolDown", coolDown - 1);
+				itemStack.getTagCompound().setInteger("coolDown", coolDown - 1);
 			} else if (coolDown<0) {
-				itemStack.stackTagCompound.setInteger("coolDown", 0);
+				itemStack.getTagCompound().setInteger("coolDown", 0);
 			}
 		}
 	}
 	
 	//get the current cool down level
 	protected int getCoolDown(ItemStack itemStack) {
-		if ( (itemStack.stackTagCompound != null) && (itemStack.stackTagCompound.hasKey("coolDown")) ) {
-			return itemStack.stackTagCompound.getInteger("coolDown");
+		if ( (itemStack.getTagCompound() != null) && (itemStack.getTagCompound().hasKey("coolDown")) ) {
+			return itemStack.getTagCompound().getInteger("coolDown");
 		}
 		return 0;
 	}
 	
 	//start the cool down timer (Set it to what ever the value is meant to be
 	protected void startCoolDown(ItemStack itemStack) {
-		if (itemStack.stackTagCompound != null) {
-			itemStack.stackTagCompound.setInteger("coolDown", this.coolDownTime);
+		if (itemStack.getTagCompound() != null) {
+			itemStack.getTagCompound().setInteger("coolDown", this.coolDownTime);
 		}
 	}
 	
 	//get the marked location in a nice string format
 	protected String getLocationString(ItemStack itemStack) {
 		String output = "";
-		if (itemStack.stackTagCompound != null) {
-			if (itemStack.stackTagCompound.hasKey("markX")) {
-				output += (int)itemStack.stackTagCompound.getDouble("markX");
-				output += ", "+(int)itemStack.stackTagCompound.getDouble("markY");
-				output += ", "+(int)itemStack.stackTagCompound.getDouble("markZ");
+		if (itemStack.getTagCompound() != null) {
+			if (itemStack.getTagCompound().hasKey("markX")) {
+				output += (int)itemStack.getTagCompound().getDouble("markX");
+				output += ", "+(int)itemStack.getTagCompound().getDouble("markY");
+				output += ", "+(int)itemStack.getTagCompound().getDouble("markZ");
 			}
 			
 		}
@@ -96,39 +105,39 @@ public abstract class ItemBase extends Item {
 	
 	//getters for the 4 location fields
 	public int getDimension(ItemStack itemStack) {
-		if (itemStack.stackTagCompound != null) {
-			return itemStack.stackTagCompound.getInteger("world");
+		if (itemStack.getTagCompound() != null) {
+			return itemStack.getTagCompound().getInteger("world");
 		}
 		return 0;
 	}
 	
 	public double getLocX(ItemStack itemStack) {
-		if (itemStack.stackTagCompound != null) {
-			return itemStack.stackTagCompound.getDouble("markX");
+		if (itemStack.getTagCompound() != null) {
+			return itemStack.getTagCompound().getDouble("markX");
 		}
 		return 0.0;
 	}
 	
 	public double getLocY(ItemStack itemStack) {
-		if (itemStack.stackTagCompound != null) {
-			return itemStack.stackTagCompound.getDouble("markY");
+		if (itemStack.getTagCompound() != null) {
+			return itemStack.getTagCompound().getDouble("markY");
 		}
 		return 0.0;
 	}
 	
 	public double getLocZ(ItemStack itemStack) {
-		if (itemStack.stackTagCompound != null) {
-			return itemStack.stackTagCompound.getDouble("markZ");
+		if (itemStack.getTagCompound() != null) {
+			return itemStack.getTagCompound().getDouble("markZ");
 		}
 		return 0.0;
 	}
 	
 	//initilise the NBT stuff
 	public void init(ItemStack itemStack) {
-		if (itemStack.stackTagCompound == null) {
-			itemStack.stackTagCompound = new NBTTagCompound();
+		if (itemStack.getTagCompound() == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
 			if (this.requireCharge) {
-				itemStack.stackTagCompound.setInteger("currentCharge", this.maxCharge);
+				itemStack.getTagCompound().setInteger("currentCharge", this.maxCharge);
 			}
 		}
 	}
@@ -137,11 +146,11 @@ public abstract class ItemBase extends Item {
 	//set the location that this stone will recall to
 	public boolean setLocation(ItemStack itemStack, int dimension, double x, double y, double z) {
 		this.init(itemStack);
-		if (itemStack.stackTagCompound != null) {
-			itemStack.stackTagCompound.setInteger("world", dimension);
-			itemStack.stackTagCompound.setDouble("markX", Math.floor(x));
-			itemStack.stackTagCompound.setDouble("markY", Math.floor(y));
-			itemStack.stackTagCompound.setDouble("markZ", Math.floor(z));
+		if (itemStack.getTagCompound() != null) {
+			itemStack.getTagCompound().setInteger("world", dimension);
+			itemStack.getTagCompound().setDouble("markX", Math.floor(x));
+			itemStack.getTagCompound().setDouble("markY", Math.floor(y));
+			itemStack.getTagCompound().setDouble("markZ", Math.floor(z));
 			return true;
 		}
 		return false;
@@ -150,31 +159,31 @@ public abstract class ItemBase extends Item {
 	//do the actual teleport
 	public boolean moveLocation(ItemStack itemStack, EntityPlayer player, World world) {
 		int coolDown = this.getCoolDown(itemStack);
-		if ( (itemStack.stackTagCompound != null) && (coolDown==0) ) {
-			int targetDimension = itemStack.stackTagCompound.getInteger("world");
+		if ( (itemStack.getTagCompound() != null) && (coolDown==0) ) {
+			int targetDimension = itemStack.getTagCompound().getInteger("world");
 			if ( (player.dimension == targetDimension) || (allowCrossDimension) ) {
 				
 				if (this.checkTarget(
-						itemStack.stackTagCompound.getInteger("world"),
-						(int)itemStack.stackTagCompound.getDouble("markX"),
-						(int)itemStack.stackTagCompound.getDouble("markY"),
-						(int)itemStack.stackTagCompound.getDouble("markZ")
+						itemStack.getTagCompound().getInteger("world"),
+						(int)itemStack.getTagCompound().getDouble("markX"),
+						(int)itemStack.getTagCompound().getDouble("markY"),
+						(int)itemStack.getTagCompound().getDouble("markZ")
 				)) {
 					
 					if (this.consumeCharge(itemStack)) {
 						this.animateTP(player);
 						
 						if (player.dimension != targetDimension) {
-							player.travelToDimension(targetDimension);
+							player.changeDimension(targetDimension);
 						}
 							
 						if (player.isRiding()){
-							player.mountEntity((Entity)null);
+							player.dismountRidingEntity();
 	                    }
 						player.setPositionAndUpdate(
-								itemStack.stackTagCompound.getDouble("markX") + 0.5,
-								itemStack.stackTagCompound.getDouble("markY"), 
-								itemStack.stackTagCompound.getDouble("markZ") + 0.5
+								itemStack.getTagCompound().getDouble("markX") + 0.5,
+								itemStack.getTagCompound().getDouble("markY"), 
+								itemStack.getTagCompound().getDouble("markZ") + 0.5
 								);
 	
 						this.animateTP(player);
@@ -182,14 +191,14 @@ public abstract class ItemBase extends Item {
 						this.startCoolDown(itemStack);
 						return true;
 					} else {
-						this.tellPlayer(player, EnumChatFormatting.RED + "Stone does not have enough charges left");
+						this.tellPlayer(player, TextFormatting.RED + "Stone does not have enough charges left");
 						this.tellPlayer(player, "Craft with an Ender Pearl to recharge");
 					}
 				} else {
-					this.tellPlayer(player, EnumChatFormatting.RED + "Something is blocking the destination");
+					this.tellPlayer(player, TextFormatting.RED + "Something is blocking the destination");
 				}
 			} else {
-				this.tellPlayer(player, EnumChatFormatting.RED + "You can not cross dimensions with this stone");
+				this.tellPlayer(player, TextFormatting.RED + "You can not cross dimensions with this stone");
 			}
 		} else {
 			this.tellPlayer(player, "Stone is still recharging");
@@ -200,7 +209,7 @@ public abstract class ItemBase extends Item {
 	//consume a charge on the stone, returns true is successful
 	public boolean consumeCharge(ItemStack itemStack) {
 		if (this.requireCharge) {
-			if (itemStack.stackTagCompound == null) return false;
+			if (itemStack.getTagCompound() == null) return false;
 			
 			int currentCharge = this.getCharge(itemStack);
 			
@@ -218,7 +227,7 @@ public abstract class ItemBase extends Item {
 	//add a single charge item (pearl)
 	public ItemStack addCharge(ItemStack itemStack, int number) {
 		if (this.requireCharge) {
-			if (itemStack.stackTagCompound != null) {
+			if (itemStack.getTagCompound() != null) {
 				int currentCharge = this.getCharge(itemStack);
 				int newCharge = currentCharge + (this.chargesPerPearl * number);
 				if (newCharge>=this.maxCharge) newCharge = this.maxCharge;
@@ -231,7 +240,7 @@ public abstract class ItemBase extends Item {
 	//check if we are able to add any charge
 	public boolean canAddCharge(ItemStack itemStack, int number) {
 		if (this.requireCharge) {
-			if (itemStack.stackTagCompound == null) return false;
+			if (itemStack.getTagCompound() == null) return false;
 			int currentCharge = ( this.getCharge(itemStack) + (this.chargesPerPearl * (number-1)));
 
 			return currentCharge < this.maxCharge;
@@ -241,19 +250,19 @@ public abstract class ItemBase extends Item {
 	}
 	
 	public void setCharge(ItemStack itemStack, int charge) {
-		if (itemStack.stackTagCompound == null) {
-			itemStack.stackTagCompound = new NBTTagCompound();
+		if (itemStack.getTagCompound() == null) {
+			itemStack.setTagCompound(new NBTTagCompound());
 		}
-		if (itemStack.stackTagCompound != null) {
-			itemStack.stackTagCompound.setInteger("currentCharge", charge);
+		if (itemStack.getTagCompound() != null) {
+			itemStack.getTagCompound().setInteger("currentCharge", charge);
 		}
 	}
 	
 	public int getCharge(ItemStack itemStack) {
 		int charge = this.maxCharge;
-		if (itemStack.stackTagCompound != null) {
-			if (itemStack.stackTagCompound.hasKey("currentCharge")) {
-				charge = itemStack.stackTagCompound.getInteger("currentCharge");
+		if (itemStack.getTagCompound() != null) {
+			if (itemStack.getTagCompound().hasKey("currentCharge")) {
+				charge = itemStack.getTagCompound().getInteger("currentCharge");
 			}
 		}
 		return charge;
@@ -263,42 +272,48 @@ public abstract class ItemBase extends Item {
 	//check the target location and see if it's clear to tp to
 	public boolean checkTarget(int targetDimension, int targetX, int targetY, int targetZ) {
 		World world = DimensionManager.getWorld(targetDimension);
-		Block target1 = world.getBlock(targetX, targetY, targetZ);
-		Block target2 = world.getBlock(targetX, targetY + 1, targetZ);
-
-		return (target1.isReplaceable(world, targetX, targetY, targetZ))
-				&& (target2.isReplaceable(world, targetX, targetY + 1, targetZ));
+		Block target1 = world.getBlockState(new BlockPos(targetX, targetY, targetZ)).getBlock();
+		Block target2 = world.getBlockState(new BlockPos(targetX, targetY + 1, targetZ)).getBlock();
+		
+		return (target1.isReplaceable(world, new BlockPos(targetX, targetY, targetZ)))
+				&& (target2.isReplaceable(world, new BlockPos(targetX, targetY + 1, targetZ)));
 	}
 	
 	protected void animateTP(EntityPlayer player) {
-		player.worldObj.playSoundAtEntity(player, RecallStones.MODID+":warp", 0.8f, 1.0f);
-		RecallStones.network.sendToAll(new SendParticles(player));
+		player.worldObj.playSound(player, player.getPosition(), warpSound, 
+				SoundCategory.AMBIENT, 0.8f, 1.0f);
+		NetworkHandler.sendToAllAroundNearby(new SendParticles(player), player);
 	}
 	
 	protected void tellPlayer(EntityPlayer player, String message) {
-		player.addChatMessage(new ChatComponentText(message));
+		player.addChatMessage(new TextComponentString(message));
 	}
 
 	@SideOnly(Side.CLIENT)
 	public abstract void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4);
 	
 	public void addCharge(ItemStack itemStack, List list) {
-		if (itemStack.stackTagCompound != null) {
+		if (itemStack.getTagCompound() != null) {
 			if (this.requireCharge) {
 				int currentCharge = getCharge(itemStack);
-				list.add(EnumChatFormatting.DARK_GREEN  + "Current Charges: "+currentCharge+"/"+this.maxCharge+" ("+this.chargesPerUse+" per use)");
+				list.add(TextFormatting.DARK_GREEN  + "Current Charges: "+currentCharge+"/"+this.maxCharge+" ("+this.chargesPerUse+" per use)");
 				if (currentCharge == 0) {
-					list.add(EnumChatFormatting.RED  + "Craft with an Ender Pearl to recharge");
+					list.add(TextFormatting.RED  + "Craft with an Ender Pearl to recharge");
 				}
 			}
 
-			if (itemStack.stackTagCompound.hasKey("coolDown")) {
-				int coolDown = itemStack.stackTagCompound.getInteger("coolDown");
+			if (itemStack.getTagCompound().hasKey("coolDown")) {
+				int coolDown = itemStack.getTagCompound().getInteger("coolDown");
 				if (coolDown>0) {
-					list.add(EnumChatFormatting.RED  + "Recharging. Time left: "+(int)Math.ceil(coolDown/20));
+					list.add(TextFormatting.RED  + "Recharging. Time left: "+(int)Math.ceil(coolDown/20));
 				}
 			}
 		}
+	}
+	
+	public void init() {
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
+			.register(this, 0, new ModelResourceLocation(Ref.MODID + ":" + itemName, "inventory"));
 	}
 	
 }

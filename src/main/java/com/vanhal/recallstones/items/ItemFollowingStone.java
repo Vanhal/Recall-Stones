@@ -1,16 +1,19 @@
-package com.vanhal.recallstones;
+package com.vanhal.recallstones.items;
 
 import java.util.List;
 
+import com.vanhal.recallstones.RecallStones;
 import com.vanhal.recallstones.client.GUIHandler;
+import com.vanhal.recallstones.utls.Ref;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemFollowingStone extends ItemBase {
@@ -18,7 +21,7 @@ public class ItemFollowingStone extends ItemBase {
 	public ItemFollowingStone() {
 		super();
 		this.setName("followingStone");
-		this.setTextureName(RecallStones.MODID + ":" + "followingStone");
+		this.setName(Ref.MODID + ":" + "followingStone");
 		this.allowCrossDimension = true;
 		this.maxCharge = 100;
 		this.chargesPerUse = 25;
@@ -33,7 +36,7 @@ public class ItemFollowingStone extends ItemBase {
 	//set and get the player enity
 	public void setPlayer(ItemStack itemStack, EntityPlayer player) {
 		if (!player.worldObj.isRemote) {
-			String username = player.getCommandSenderName();
+			String username = player.getName();
 			this.setUsername(itemStack, username);
 		}
 	}
@@ -41,7 +44,7 @@ public class ItemFollowingStone extends ItemBase {
 	public EntityPlayer getPlayer(ItemStack itemStack, World world) {
 		if (!world.isRemote) {
 			String username = this.getUsername(itemStack);
-			return MinecraftServer.getServer().getConfigurationManager().func_152612_a(username);
+//			return MinecraftServer.getServer().getEntityWorld().getPlayerEntityByName(username);
 		}
 		return null;
 	}
@@ -49,13 +52,13 @@ public class ItemFollowingStone extends ItemBase {
 	
 	//set and get the username
 	public void setUsername(ItemStack itemStack, String username) {
-		if (itemStack.stackTagCompound==null) itemStack.stackTagCompound = new NBTTagCompound(); 
-		itemStack.stackTagCompound.setString("username", username);
+		if (itemStack.getTagCompound()==null) itemStack.setTagCompound(new NBTTagCompound()); 
+		itemStack.getTagCompound().setString("username", username);
 	}
 	
 	public String getUsername(ItemStack itemStack) {
-		if (itemStack.stackTagCompound==null) return null;
-		return itemStack.stackTagCompound.getString("username");
+		if (itemStack.getTagCompound()==null) return null;
+		return itemStack.getTagCompound().getString("username");
 	}
 	
 	//warp to the player if they exist, otherwise don't
@@ -84,9 +87,9 @@ public class ItemFollowingStone extends ItemBase {
 		String username = this.getUsername(itemStack);
 
 		if (username == null)
-			list.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Unlinked");
+			list.add(TextFormatting.GRAY + "" + TextFormatting.ITALIC + "Unlinked");
 		else
-			list.add(EnumChatFormatting.GRAY + "Linked to " + username);
+			list.add(TextFormatting.GRAY + "Linked to " + username);
 
 		this.addCharge(itemStack, list);
 	}

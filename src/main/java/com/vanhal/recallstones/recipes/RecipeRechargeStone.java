@@ -1,13 +1,16 @@
-package com.vanhal.recallstones;
+package com.vanhal.recallstones.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.vanhal.recallstones.items.ItemBase;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeRechargeStone implements IRecipe {
@@ -26,10 +29,10 @@ public class RecipeRechargeStone implements IRecipe {
 			if ( (itemstack != null) && (itemstack.getItem()!=null) ) {
 				if (itemstack.getItem() instanceof ItemBase) {
 					stone = itemstack;
-				} else if (itemstack.getItem().equals(Items.ender_pearl)) {
+				} else if (itemstack.getItem().equals(Items.ENDER_PEARL)) {
 					numberPearls++;
-				} else if (OreDictionary.getOreID(itemstack) == OreDictionary.getOreID("cropEnderweed")) {
-					numberPearls++;
+				//} else if (OreDictionary.getOreID(itemstack) == OreDictionary.getOreID("cropEnderweed")) {
+				//	numberPearls++;
 				}
 			}
         }
@@ -64,10 +67,10 @@ public class RecipeRechargeStone implements IRecipe {
 				if (temp.getItem() instanceof ItemBase) {
 					if (!haveStone) haveStone = true;
 					else otherItems++;
-				} else if (temp.getItem().equals(Items.ender_pearl)) {
+				} else if (temp.getItem().equals(Items.ENDER_PEARL)) {
 					numberPearls++;
-				} else if (OreDictionary.getOreID(temp) == OreDictionary.getOreID("cropEnderweed")) {
-					numberPearls++;
+				//} else if (OreDictionary.getOreID(temp) == OreDictionary.getOreID("cropEnderweed")) {
+				//	numberPearls++;
 				} else {
 					otherItems++;
 				}
@@ -77,6 +80,11 @@ public class RecipeRechargeStone implements IRecipe {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 
 }

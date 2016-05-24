@@ -1,4 +1,9 @@
-package com.vanhal.recallstones;
+package com.vanhal.recallstones.recipes;
+
+import com.vanhal.recallstones.RecallStones;
+import com.vanhal.recallstones.items.ItemDimensionStone;
+import com.vanhal.recallstones.items.ItemRecallStone;
+import com.vanhal.recallstones.items.RecallItems;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -7,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 //recipe for upgrading a recall stone to a dimensional stone
 public class RecipeUpgradeStone implements IRecipe {
@@ -14,9 +20,9 @@ public class RecipeUpgradeStone implements IRecipe {
 	private ItemStack dimenionalStone;
 	
 	public Item[] recipeList = {
-			Items.ender_pearl, Items.blaze_rod, Items.ender_pearl, 
-			Items.blaze_rod, RecallStones.itemRecallStone, Items.blaze_rod, 
-			Items.ender_pearl, Items.blaze_rod, Items.ender_pearl
+			Items.ENDER_PEARL, Items.BLAZE_ROD, Items.ENDER_PEARL, 
+			Items.BLAZE_ROD, RecallItems.itemRecallStone, Items.BLAZE_ROD, 
+			Items.ENDER_PEARL, Items.BLAZE_ROD, Items.ENDER_PEARL
 		};
 
 	public RecipeUpgradeStone(ItemStack in, ItemStack out) {
@@ -81,6 +87,11 @@ public class RecipeUpgradeStone implements IRecipe {
 			return false;
 		}
 		
+	}
+
+	@Override
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 	
 }

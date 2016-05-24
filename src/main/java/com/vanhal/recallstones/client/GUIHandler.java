@@ -3,9 +3,10 @@ package com.vanhal.recallstones.client;
 import com.vanhal.recallstones.RecallStones;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class GUIHandler implements IGuiHandler {
 	
@@ -18,7 +19,7 @@ public class GUIHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if (ID == GUIHandler.RENAME_STONE) {
-			return new GUINameStone(player);
+			return new GUINameStone(player, EnumHand.values()[x]);
 		} else {
 			return null;
 		}

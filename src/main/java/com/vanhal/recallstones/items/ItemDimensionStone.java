@@ -1,4 +1,4 @@
-package com.vanhal.recallstones;
+package com.vanhal.recallstones.items;
 
 import net.minecraft.item.Item;
 
