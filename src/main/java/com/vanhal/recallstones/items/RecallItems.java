@@ -13,6 +13,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.RecipeSorter;
 
 public class RecallItems {
@@ -87,12 +88,14 @@ public class RecallItems {
 	}
 	
 	public static void init(FMLInitializationEvent event) {
-		itemRecallStone.init();
-		itemDimensionStone.init();
-		itemFollowingStone.init();
-		itemRecallStoneBlank.init();
-		itemDimensionStoneBlank.init();
-		itemPlayerEssence.init();
+		if (event.getSide() == Side.CLIENT) {
+			itemRecallStone.init();
+			itemDimensionStone.init();
+			itemFollowingStone.init();
+			itemRecallStoneBlank.init();
+			itemDimensionStoneBlank.init();
+			itemPlayerEssence.init();
+		}
 	}
 	
 	public static void postInit() {

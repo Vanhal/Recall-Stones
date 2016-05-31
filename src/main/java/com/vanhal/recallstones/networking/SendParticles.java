@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class SendParticles implements IMessage {
@@ -49,14 +50,16 @@ public class SendParticles implements IMessage {
             if (ctx.side == Side.SERVER) {
             	message.handleServerSide(ctx.getServerHandler().playerEntity);
             } else if (ctx.side == Side.CLIENT) {
-            	message.handleClientSide(Minecraft.getMinecraft().thePlayer);
+            	message.handleClientSide();
             }
             return null;
         }
         
     }
-
-	public void handleClientSide(EntityPlayer player) {
+    
+    @SideOnly(Side.CLIENT)
+	public void handleClientSide() {
+    	EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		if (player.dimension == this.dimension) {
 			for (int i = 0; i < 32; ++i) {
 				player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, 
@@ -68,7 +71,8 @@ public class SendParticles implements IMessage {
 			}
 		}
 	}
-
+    
+    @SideOnly(Side.SERVER)
 	public void handleServerSide(EntityPlayer player) {
 		// Nothing to do here
 	}
