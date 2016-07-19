@@ -70,7 +70,6 @@ public class MessageMarkStone implements IMessage {
 			player.getHeldItem(stoneHand).stackSize--;
 	}
     
-    @SideOnly(Side.SERVER)
 	public void handleServerSide(EntityPlayer player) {
 		//RecallStones.logger.info("Recieved Server Message: "+stoneName+", "+stoneHand);
 		if (!(player.getHeldItem(stoneHand).getItem() instanceof ItemRecallStoneBlank))
